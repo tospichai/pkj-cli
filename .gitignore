@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Config & History (user-local)
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Test artifacts
+coverage/
+.nyc_output/
+
+# OS files
+Thumbs.db
