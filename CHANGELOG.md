@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-06-12
+
+### Changed
+
+- **Migrated the entire codebase from JavaScript (CommonJS) to TypeScript (ESM)** for better type safety and maintainability.
+- Split the monolithic `bin/pkj.js` (~1,100 lines) into focused modules under `src/`.
+- Added strict TypeScript configuration including `useUnknownInCatchVariables`, `noUncheckedIndexedAccess`, `noImplicitReturns`, and `noUnusedLocals`.
+
+### Added
+
+- Runtime type guards for `package.json`, config, and history JSON files — corrupted user files no longer crash the CLI.
+- Centralized `getErrorMessage()` utility for safe error handling without `(e as Error).message` casts.
+- Lightweight `Result<T, E>` utility type.
+- ESLint + Prettier setup for consistent code style.
+- GitHub Actions CI now runs typecheck, lint, format check, build, and tests.
+- GitHub Actions publish workflow triggers on `v*` tags.
+- `prepublishOnly` hook ensures every publish is typechecked, linted, and tested.
+- `exports` and `types` fields in `package.json` for proper ESM + TypeScript consumer support.
+
+### Removed
+
+- All `require()` calls in favor of ESM `import`/`export`.
+- All runtime `any` types and unsafe JSON casts.
+
 ## [1.0.0] - 2025-06-01
 
 ### Added

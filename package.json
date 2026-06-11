@@ -1,70 +1,50 @@
 {
   "name": "pkj-cli",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Interactive package.json script picker & runner — zero dependencies",
-  "main": "bin/pkj.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "pkj": "bin/pkj.js"
+    "pkj": "./dist/index.js"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "scripts": {
-    "dev": "node bin/pkj.js",
-    "dev:watch": "echo 'Watching for changes...'",
-    "start": "echo 'Starting production server...'",
-    "start:local": "echo 'Starting local server...'",
-    "build": "echo 'Building project...'",
-    "build:prod": "echo 'Building for production...'",
-    "build:analyze": "echo 'Analyzing bundle size...'",
-    "test": "node --test test/*.test.js",
-    "test:unit": "echo 'Running unit tests...'",
-    "test:integration": "echo 'Running integration tests...'",
-    "test:e2e": "echo 'Running end-to-end tests...'",
-    "test:watch": "echo 'Watching tests...'",
-    "test:coverage": "echo 'Generating coverage report...'",
-    "lint": "echo 'Linting code...'",
-    "lint:fix": "echo 'Auto-fixing lint issues...'",
-    "format": "echo 'Formatting code...'",
-    "format:check": "echo 'Checking code format...'",
-    "typecheck": "echo 'Running TypeScript type check...'",
-    "clean": "echo 'Cleaning build artifacts...'",
-    "clean:all": "echo 'Cleaning everything...'",
-    "db:migrate": "echo 'Running database migrations...'",
-    "db:seed": "echo 'Seeding database...'",
-    "db:reset": "echo 'Resetting database...'",
-    "docker:build": "echo 'Building Docker image...'",
-    "docker:up": "echo 'Starting Docker containers...'",
-    "docker:down": "echo 'Stopping Docker containers...'",
-    "deploy:staging": "echo 'Deploying to staging...'",
-    "deploy:production": "echo 'Deploying to production...'",
-    "storybook": "echo 'Starting Storybook...'",
-    "storybook:build": "echo 'Building Storybook...'",
-    "docs:generate": "echo 'Generating documentation...'",
-    "docs:serve": "echo 'Serving documentation...'",
-    "audit": "echo 'Running security audit...'",
-    "audit:fix": "echo 'Fixing security issues...'",
-    "release": "echo 'Creating release...'",
-    "release:patch": "echo 'Creating patch release...'",
-    "release:minor": "echo 'Creating minor release...'",
-    "release:major": "echo 'Creating major release...'",
-    "ci": "echo 'Running CI pipeline...'",
-    "cd": "echo 'Running CD pipeline...'",
-    "postinstall": "echo 'Running post-install hooks...'"
+    "dev": "npm run build && node dist/index.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc -p tsconfig.test.json && node --test dist-test/test/index.test.js",
+    "test:coverage": "echo 'Coverage reporting is not configured yet. Consider adding c8.'",
+    "lint": "eslint src/ test/ --ext .ts",
+    "lint:fix": "eslint src/ test/ --ext .ts --fix",
+    "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.ts' 'test/**/*.ts'",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "prepublishOnly": "npm run clean && npm run typecheck && npm run test",
+    "postversion": "git push && git push --tags"
   },
   "scriptsMeta": {
-    "dev": { "desc": "Run pkj CLI in dev mode" },
-    "dev:watch": { "desc": "Watch files and reload on changes" },
-    "start": { "desc": "Start production server" },
-    "build": { "desc": "Build the project" },
-    "build:prod": { "desc": "Optimized production build" },
-    "test": { "desc": "Quick syntax check" },
-    "test:unit": { "desc": "Run unit tests with Jest/Vitest" },
-    "test:e2e": { "desc": "Run Playwright/Cypress E2E tests" },
+    "dev": { "desc": "Build and run pkj CLI" },
+    "build": { "desc": "Compile TypeScript to dist/" },
+    "typecheck": { "desc": "Run TypeScript type check without emitting files" },
+    "test": { "desc": "Build and run the test suite" },
     "lint": { "desc": "Check code style with ESLint" },
     "lint:fix": { "desc": "Auto-fix ESLint issues" },
-    "db:migrate": { "desc": "Run Prisma/Drizzle migrations" },
-    "docker:up": { "desc": "Start local infrastructure" },
-    "deploy:staging": { "desc": "Deploy to staging environment" },
-    "storybook": { "desc": "Launch component documentation" },
-    "audit": { "desc": "Check for security vulnerabilities" }
+    "format": { "desc": "Format source files with Prettier" },
+    "format:check": { "desc": "Check source formatting with Prettier" },
+    "clean": { "desc": "Remove build artifacts" },
+    "prepublishOnly": { "desc": "Pre-publish hook: typecheck + test + build" }
   },
   "keywords": [
     "cli",
@@ -92,14 +72,15 @@
     "url": "https://github.com/tospichai/pkj-cli/issues"
   },
   "homepage": "https://github.com/tospichai/pkj-cli#readme",
-  "type": "commonjs",
   "engines": {
     "node": ">=18.0.0"
   },
-  "files": [
-    "bin/",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ]
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.7.0"
+  }
 }

@@ -1,0 +1,5 @@
+dist/
+dist-test/
+node_modules/
+CHANGELOG.md
+package-lock.json

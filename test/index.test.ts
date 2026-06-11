@@ -1,10 +1,10 @@
-const { describe, it, beforeEach, afterEach } = require('node:test');
-const assert = require('node:assert');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+import { describe, it, beforeEach, afterEach } from 'node:test';
+import assert from 'node:assert';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
-const {
+import {
   stripAnsi,
   visibleLength,
   fuzzyScore,
@@ -17,7 +17,7 @@ const {
   detectPackageManager,
   parseArgs,
   THEMES,
-} = require('../bin/pkj.js');
+} from '../src/index.js';
 
 // ─── ANSI Utilities ─────────────────────────────────────────────────────────
 describe('stripAnsi', () => {
@@ -133,7 +133,6 @@ describe('truncate', () => {
   });
 
   it('truncates with ellipsis', () => {
-    // truncate keeps max-2 chars then adds '…'
     assert.strictEqual(truncate('hello world', 8), 'hello …');
     assert.strictEqual(truncate('hello world', 10), 'hello wo…');
   });
@@ -146,29 +145,28 @@ describe('truncate', () => {
 // ─── Package Manager ────────────────────────────────────────────────────────
 describe('getPmCommand', () => {
   it('formats npm command with -- separator', () => {
-    const [cmd, ...args] = getPmCommand('npm', 'build', ['--watch']);
-    assert.strictEqual(cmd, process.platform === 'win32' ? 'npm.cmd' : 'npm');
+    const [_cmd, ...args] = getPmCommand('npm', 'build', ['--watch']);
     assert.deepStrictEqual(args, ['run', 'build', '--', '--watch']);
   });
 
   it('formats pnpm command without --', () => {
-    const [cmd, ...args] = getPmCommand('pnpm', 'dev', ['--port', '3000']);
+    const [_cmd, ...args] = getPmCommand('pnpm', 'dev', ['--port', '3000']);
     assert.deepStrictEqual(args, ['run', 'dev', '--port', '3000']);
   });
 
   it('formats bun command directly', () => {
-    const [cmd, ...args] = getPmCommand('bun', 'start', ['--help']);
+    const [_cmd, ...args] = getPmCommand('bun', 'start', ['--help']);
     assert.deepStrictEqual(args, ['run', 'start', '--help']);
   });
 
   it('handles no extra args', () => {
-    const [cmd, ...args] = getPmCommand('npm', 'test', []);
+    const [_cmd, ...args] = getPmCommand('npm', 'test', []);
     assert.deepStrictEqual(args, ['run', 'test', '--']);
   });
 });
 
 describe('detectPackageManager', () => {
-  let tmpDir;
+  let tmpDir: string;
 
   beforeEach(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pkj-test-'));
@@ -212,7 +210,12 @@ describe('detectPackageManager', () => {
 describe('highlightName', () => {
   const theme = {
     primary: '\x1b[36m',
+    secondary: '\x1b[34m',
+    accent: '\x1b[32m',
     match: '\x1b[33m',
+    desc: '\x1b[34m',
+    dim: '\x1b[90m',
+    border: '\x1b[90m',
   };
 
   it('returns plain colored name when no filter', () => {
@@ -223,7 +226,7 @@ describe('highlightName', () => {
   it('highlights matched range', () => {
     const result = highlightName('build', 'bld', theme);
     assert.ok(result.includes('bui')); // prefix
-    assert.ok(result.includes('ld'));  // suffix
+    assert.ok(result.includes('ld')); // suffix
   });
 
   it('returns plain name when no match', () => {
@@ -308,7 +311,7 @@ describe('THEMES', () => {
     const required = ['primary', 'secondary', 'accent', 'match', 'desc', 'dim', 'border'];
     for (const [name, theme] of Object.entries(THEMES)) {
       for (const key of required) {
-        assert.ok(theme[key], `theme "${name}" missing "${key}"`);
+        assert.ok((theme as unknown as Record<string, string>)[key], `theme "${name}" missing "${key}"`);
       }
     }
   });

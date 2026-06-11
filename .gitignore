@@ -1,18 +1,24 @@
 # Dependencies
 node_modules/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
 
-# Config & History (user-local)
+# Agent skills
+.agents/
+skills-lock.json
+
+# Build output
+dist/
+dist-test/
+
+# Logs
 *.log
-.DS_Store
-.vscode/
-.idea/
 
-# Test artifacts
+# Test coverage
 coverage/
 .nyc_output/
 
+# Secrets / local environment
+.env*
+
 # OS files
+.DS_Store
 Thumbs.db

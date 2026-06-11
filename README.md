@@ -1,8 +1,9 @@
 # pkj-cli
 
-> Interactive `package.json` script picker & runner — zero dependencies
+> Interactive `package.json` script picker & runner — zero runtime dependencies
 
 [![npm version](https://img.shields.io/npm/v/pkj-cli.svg)](https://www.npmjs.com/package/pkj-cli)
+[![CI](https://github.com/tospichai/pkj-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/tospichai/pkj-cli/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/pkj-cli.svg)](https://github.com/tospichai/pkj-cli/blob/main/LICENSE)
 
 `pkj` is a lightweight, beautiful CLI tool that finds the nearest `package.json`, lists its scripts, and lets you filter & navigate interactively to run them.
@@ -19,7 +20,6 @@
 
   ▸ dev  ↻ 5×
     ▶ npm run dev
-    Start development server with hot reload
     ◈ build  · npm run build
     ◈ build:prod  · npm run build:prod
     ✓ test  · npm run test
@@ -39,7 +39,7 @@
 npm install -g pkj-cli
 ```
 
-Or use with npx (no install):
+Or use with `npx` (no install):
 
 ```bash
 npx pkj-cli
@@ -84,7 +84,7 @@ Press `/` to open the command palette, then type:
 
 ## Features
 
-- **Zero dependencies** — Only uses Node.js built-in modules
+- **Zero runtime dependencies** — Only uses Node.js built-in modules
 - **Beautiful UI** — Box-drawing borders, elegant icons, and clean typography
 - **Auto-discovery** — Walks up directory tree to find `package.json`
 - **Auto-detect package manager** — Detects npm, yarn, pnpm, or bun from lock files
@@ -96,10 +96,10 @@ Press `/` to open the command palette, then type:
 - **Multi-select** — Select and run multiple scripts sequentially
 - **Run duration** — Shows how long each script took with beautiful output
 - **History tracking** — Remembers your most-used scripts across sessions
-- **Workspace support** — Detects `-w <workspace>` flags and shows badges
 - **Command palette** — Access advanced features with `/` without conflicting with search
 - **Theme picker** — Choose from 6 color themes (default, ocean, sunset, forest, rose, midnight)
 - **Terminal resize** — Adapts to terminal window size
+- **Built with TypeScript** — Type-safe, modular, and maintainable
 
 ## Script Descriptions
 
@@ -142,9 +142,34 @@ pkj --multi
 pkj --args --watch
 ```
 
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run type check
+npm run typecheck
+
+# Run linter
+npm run lint
+
+# Run formatter check
+npm run format:check
+
+# Build TypeScript
+npm run build
+
+# Run tests
+npm test
+
+# Run CLI from source
+npm run dev
+```
+
 ## Requirements
 
-- Node.js >= 14.0.0
+- Node.js >= 18.0.0
 
 ## License
 
