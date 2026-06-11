@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Run tests
-        run: node --test dist-test/test/index.test.js
+        run: npm test
 
       - name: Test CLI help
         run: node dist/index.js --help
